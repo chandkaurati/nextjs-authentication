@@ -8,10 +8,14 @@ dbConnect();
 
 export async function POST(request: NextRequest) {
   try {
-    const reqBody = request.json();
+    const reqBody = await request.json();
     const { username, email, password } = reqBody;
 
     // TODO handle the validation
+
+    if(!username || !email || !password ){
+      throw new Error("all feild are required")
+    }
 
     const isUserExist = await User.findOne({ email });
     if (isUserExist) {
@@ -36,13 +40,14 @@ export async function POST(request: NextRequest) {
 
     await sendEmail({
       email: email,
-      emailType: "VERIFICATION",
+      emailType: "VERIFY",
       userId: savedUser._id,
     });
 
     return NextResponse.json({
       message: "user registered successfully",
       succcess: true,
+      user : savedUser
     });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });

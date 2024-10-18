@@ -1,4 +1,9 @@
-export const markup = ({emailType, Url}) => {
+interface markupProps  {
+   emailType : string,
+   Url : string
+}
+
+export const markup = ({emailType, Url} : markupProps) => {
     const html = `
     <html>
        <head>
@@ -49,7 +54,7 @@ export const markup = ({emailType, Url}) => {
              <p>${emailType === "VERIFY" ? "Thank you for registering with us! Please click the button below to verify your email address and activate your account"
               : "click  the link below to reset your password"}</p>
              <p style="text-align: center;">
-                <a href="${Url}" class="btn">${emailType === "VERIY" ? "verify" : "Reset Password"}</a>
+                <a href="${Url}" class="btn">${emailType === "VERIFY" ? "verify" : "Reset Password"}</a>
              </p>
              <p>If you did not sign up for an account, you can safely ignore this email.</p>
              <p>Thank you!</p>
