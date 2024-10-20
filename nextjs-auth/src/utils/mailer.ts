@@ -1,7 +1,7 @@
 import User from "@/models/user.model";
 import nodemailer from "nodemailer";
 import bcryptjs from "bcryptjs";
-import { markup } from "@/constants/email-markup"
+import { markup } from "@/constants/email-markup";
 
 interface sendEmailPrpos {
   email: string;
@@ -18,13 +18,17 @@ export const sendEmail = async ({
     const hashedToken = await bcryptjs.hash(userId.toString(), 10);
     if (emailType === "VERIFY") {
       await User.findByIdAndUpdate(userId, {
-        verifyToken: hashedToken,
-        verifyTokenExpiry: Date.now() + 3600000,
+        $set: {
+          verifyToken: hashedToken,
+          verifyTokenExpiry: Date.now() + 3600000,
+        },
       });
     } else if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
-        forgotPasswordToken: hashedToken,
-        forgotPasswordTokenExpiry: Date.now() + 3600000,
+        $set: {
+          forgotPasswordToken: hashedToken,
+          forgotPasswordTokenExpiry: Date.now() + 3600000,
+        },
       });
     }
 
@@ -42,8 +46,14 @@ export const sendEmail = async ({
       from: "chandkaurati@outlook.com",
       to: email,
       subject:
-      emailType === "VERIFY" ? "verify your email" : "Reset Your Password",
-      html: markup({emailType : emailType , Url : `${process.env.DOMAIN}/${emailType==="VERIFY" ?"verify":"reset-password"}?token=${hashedToken}`}),
+        emailType === "VERIFY" ? "verify your email" : "Reset Your Password",
+      html: markup({
+        emailType: emailType,
+        Url: `${process.env.DOMAIN}/${
+          emailType === "VERIFY" ? "verify" : "reset-password"
+        }?token=${hashedToken}`,
+        token: hashedToken,
+      }),
     };
 
     const mailResponce = transport.sendMail(mailOptions);

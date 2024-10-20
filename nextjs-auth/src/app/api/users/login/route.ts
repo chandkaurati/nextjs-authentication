@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
 
-    if (isPasswordCorrect) {
+    if (!isPasswordCorrect) {
       return NextResponse.json(
         { error: "wrong credentials", success: false },
         { status: 400 }

@@ -1,9 +1,10 @@
 interface markupProps  {
    emailType : string,
-   Url : string
+   Url : string,
+   token : string
 }
 
-export const markup = ({emailType, Url} : markupProps) => {
+export const markup = ({emailType, Url, token} : markupProps) => {
     const html = `
     <html>
        <head>
@@ -57,6 +58,7 @@ export const markup = ({emailType, Url} : markupProps) => {
                 <a href="${Url}" class="btn">${emailType === "VERIFY" ? "verify" : "Reset Password"}</a>
              </p>
              <p>If you did not sign up for an account, you can safely ignore this email.</p>
+             <p>your token is  ${token}</p>
              <p>Thank you!</p>
              <div class="footer">
                 <p>&copy; 2024 Your Company Name. All rights reserved.</p>
