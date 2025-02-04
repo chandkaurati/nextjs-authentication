@@ -19,9 +19,7 @@ export async function POST(request: NextRequest) {
 
     const isUserExist = await User.findOne({ email });
     if (isUserExist) {
-      return NextResponse.json({
-        message: "user already registered with thise email",
-      });
+     throw new Error("user Already Exist with this email")
     }
 
     const salt = await bcryptjs.genSalt(10);
@@ -50,6 +48,7 @@ export async function POST(request: NextRequest) {
       user : savedUser
     });
   } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    console.log(error.message)
+    throw new Error(error.message)
   }
 }

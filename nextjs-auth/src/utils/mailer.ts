@@ -50,7 +50,7 @@ export const sendEmail = async ({
       html: markup({
         emailType: emailType,
         Url: `${process.env.DOMAIN}/${
-          emailType === "VERIFY" ? "verify" : "reset-password"
+          emailType === "VERIFY" ? "verifyemail" : "reset-password"
         }?token=${hashedToken}`,
         token: hashedToken,
       }),

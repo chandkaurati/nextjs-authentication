@@ -19,6 +19,6 @@ export async function POST(request: NextRequest) {
       data: user,
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    throw new Error(error.message)
   }
 }

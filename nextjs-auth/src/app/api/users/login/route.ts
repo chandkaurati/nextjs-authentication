@@ -40,17 +40,21 @@ export async function POST(request: NextRequest) {
     };
 
     const token = genrateJwtAuthToken(TokenPayload);
-
+    
+    
     const responce = NextResponse.json({
       message: "logged in Successfully",
       success: true,
     });
+
+    console.log(responce)
 
     responce.cookies.set("token", token, {
       httpOnly: true,
     });
 
     return responce;
+    
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
